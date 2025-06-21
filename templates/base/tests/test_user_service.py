@@ -1,8 +1,12 @@
-import pytest
 from unittest.mock import MagicMock
 
+import pytest
+from server.exceptions.user import (
+    UserNotFoundException,
+    UserRoleNotAllowedException,
+    UserWithEmailAlreadyExistsException,
+)
 from server.services.user.service import UserService
-from server.exceptions.user import UserNotFoundException, UserRoleNotAllowedException, UserWithEmailAlreadyExistsException
 
 
 @pytest.mark.asyncio
@@ -24,6 +28,7 @@ async def test_get_user_success(mock_user_dao, sample_user):
     mock_user_dao.get_user_by_id.assert_called_once_with("123")
     user_service._check_user_permission.assert_called_once_with("123", sample_user)
 
+
 @pytest.mark.asyncio
 async def test_get_users_success(mock_user_dao, admin_user, sample_user):
     # Create an instance of UserService with the mocked DAO
@@ -34,7 +39,7 @@ async def test_get_users_success(mock_user_dao, admin_user, sample_user):
 
     # Mock `_check_user_permission` to prevent any side effects
     user_service._require_admin = MagicMock()
-    
+
     # Call the service method with an admin user
     result = await user_service.get_users(current_user=admin_user)
 
@@ -42,6 +47,7 @@ async def test_get_users_success(mock_user_dao, admin_user, sample_user):
     assert result == [sample_user]
     mock_user_dao.get_users.assert_called_once()
     user_service._require_admin.assert_called_once_with(admin_user)
+
 
 @pytest.mark.asyncio
 async def test_get_users_non_admin_raises_exception(mock_user_dao, sample_user):
@@ -52,8 +58,11 @@ async def test_get_users_non_admin_raises_exception(mock_user_dao, sample_user):
     with pytest.raises(UserRoleNotAllowedException):
         await user_service.get_users(current_user=sample_user)
 
+
 @pytest.mark.asyncio
-async def test_create_user_success(mock_user_dao, sample_user_create_request, sample_user):
+async def test_create_user_success(
+    mock_user_dao, sample_user_create_request, sample_user
+):
     # Create an instance of UserService with the mocked DAO
     user_service = UserService(user_dao=mock_user_dao)
 
@@ -68,12 +77,16 @@ async def test_create_user_success(mock_user_dao, sample_user_create_request, sa
 
     # Assert the result
     assert result == sample_user
-    mock_user_dao.get_user_by_email.assert_called_once_with(sample_user_create_request.email)
+    mock_user_dao.get_user_by_email.assert_called_once_with(
+        sample_user_create_request.email
+    )
     mock_user_dao.insert_user.assert_called_once_with(sample_user_create_request)
 
 
 @pytest.mark.asyncio
-async def test_create_user_email_already_exists(mock_user_dao, sample_user_create_request, sample_user):
+async def test_create_user_email_already_exists(
+    mock_user_dao, sample_user_create_request, sample_user
+):
     # Create an instance of UserService with the mocked DAO
     user_service = UserService(user_dao=mock_user_dao)
 
@@ -85,9 +98,10 @@ async def test_create_user_email_already_exists(mock_user_dao, sample_user_creat
         await user_service.create_user(user_data=sample_user_create_request)
 
 
-
 @pytest.mark.asyncio
-async def test_update_user_success(mock_user_dao, sample_user_update_request, sample_user):
+async def test_update_user_success(
+    mock_user_dao, sample_user_update_request, sample_user
+):
     # Create an instance of UserService with the mocked DAO
     user_service = UserService(user_dao=mock_user_dao)
 
@@ -95,7 +109,9 @@ async def test_update_user_success(mock_user_dao, sample_user_update_request, sa
     mock_user_dao.update_user.return_value = sample_user
 
     # Call the service method
-    result = await user_service.update_user(user_id="123", user_data=sample_user_update_request, current_user=sample_user)
+    result = await user_service.update_user(
+        user_id="123", user_data=sample_user_update_request, current_user=sample_user
+    )
 
     # Assert the result
     assert result == sample_user
@@ -103,7 +119,9 @@ async def test_update_user_success(mock_user_dao, sample_user_update_request, sa
 
 
 @pytest.mark.asyncio
-async def test_update_user_no_permission_raises_exception(mock_user_dao, sample_user_update_request):
+async def test_update_user_no_permission_raises_exception(
+    mock_user_dao, sample_user_update_request
+):
     # Create an instance of UserService with the mocked DAO
     user_service = UserService(user_dao=mock_user_dao)
 
@@ -112,8 +130,9 @@ async def test_update_user_no_permission_raises_exception(mock_user_dao, sample_
 
     # Call the service method and expect an exception
     with pytest.raises(UserRoleNotAllowedException):
-        await user_service.update_user(user_id="123", user_data=sample_user_update_request, current_user=other_user)
-
+        await user_service.update_user(
+            user_id="123", user_data=sample_user_update_request, current_user=other_user
+        )
 
 
 @pytest.mark.asyncio
