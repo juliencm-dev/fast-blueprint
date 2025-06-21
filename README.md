@@ -4,6 +4,8 @@
 Stop wasting time on boilerplate and start building features that matter.
 Let Fast-Blueprint handle the setup, so you can focus on shipping. ✨
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/juliencm-dev/fast-blueprint?utm_source=oss&utm_medium=github&utm_campaign=juliencm-dev%2Ffast-blueprint&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 ---
 
 ## 🎯 Features
