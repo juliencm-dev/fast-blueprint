@@ -8,52 +8,53 @@ Let Fast-Blueprint handle the setup, so you can focus on shipping. ✨
 
 ## 🎯 Features
 
-- 🏗️ **Instant FastAPI Project Structure**
-  Get started with a clean, organized, and scalable foundation.
+### 🏗️ Instant FastAPI Project Structure
+Get started with a clean, organized, and scalable foundation.
 
-- 🔐 **Preconfigured Authentication & Authorization**
-  Secure your app from the start with best-practice auth setups.
+### 🔐 Preconfigured Authentication & Authorization
+Secure your app from the start with best-practice auth setups.
+Includes JWT tokens, refresh mechanisms, rate limiting, and more.
 
-- 🗄️ **Database Integration**
-  Out-of-the-box support for SQLModel, SQLAlchemy, and Alembic
-  Choose from PostgreSQL, SQLite, MongoDB, or MySQL.
+### 🗄️ Database Integration
+Out-of-the-box support for SQLModel, SQLAlchemy, and Alembic.  
+Choose from PostgreSQL, SQLite, MongoDB, or MySQL.
 
-- 🛡️ **Typesafe Environment Variables**
-  Powered by Pydantic for robust config management.
+### 🛡️ Typesafe Environment Variables
+Powered by Pydantic for robust config management.
 
-- 🚨 **Custom Error Handling**
-  Centralized exception factory for consistent error responses.
+### 🚨 Custom Error Handling
+Centralized exception factory for consistent error responses.
 
-- 📋 **Configurable Logging**
-  Production-ready logging setup—tweak to your needs.
+### 📋 Configurable Logging
+Production-ready logging setup—tweak to your needs.
 
-- 🐳 **Dev Environment with Docker & Docker Compose**
-  Spin up your stack with a single command.
+### 🐳 Dev Environment with Docker & Docker Compose
+Spin up your stack with a single command.
 
-- 🤖 **CI with GitHub Actions**
-  Open Pull Request confidently with automated testing and code quality check.
+### 🤖 CI with GitHub Actions
+Open pull requests confidently with automated testing and code quality checks.
 
-- 🧪 **Testing with Pytest**
-  Preconfigured for fast, reliable test suites.
+### 🧪 Testing with Pytest
+Preconfigured for fast, reliable test suites.
 
-- 🧹 **Pre-commit Hooks**
-  Automatic code formatting and linting before every commit.
+### 🧹 Pre-commit Hooks
+Automatic code formatting and linting before every commit.
 
-- 🛠️ **Handy Makefile**
-  Common scripts and workflows at your fingertips.
+### 🛠️ Handy Makefile
+Common scripts and workflows at your fingertips.
 
 ---
 
 ## 💡 Why Fast-Blueprint?
 
-- **Not just an API starter!**
-  Fast-Blueprint is designed for real-world backend applications—ready to power your next full-stack project.
+### Not Just an API Starter!
+Fast-Blueprint is designed for real-world backend applications—ready to power your next full-stack project.
 
-- **Customizable templates**
-  Tweak, extend, or override to fit your team’s needs.
+### Feature Selection at Your Fingertips
+Choose which features you want during setup—no need to edit templates manually.
 
-- **Frontend-friendly**
-  Built with CORS and modern frontend integration in mind.
+### Frontend-Friendly
+Connect to any frontend with ease—seamless integration for React, Vue, Svelte, Angular, and more.
 
 ---
 
