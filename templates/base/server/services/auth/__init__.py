@@ -23,7 +23,7 @@ def get_auth_service(
     email_service: EmailService = Depends(get_email_service),
     device_manager: DeviceManager = Depends(get_device_manager),
     cache: aioredis.Redis = Depends(get_cache),
-):
+) -> AuthService:
     return AuthService(
         UserDAO(session, cache),
         pwd_manager=pwd_manager,
