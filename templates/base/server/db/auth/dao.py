@@ -72,9 +72,9 @@ class AuthDAO:
         try:
             self.session.add(ValidationToken(**token_data.model_dump()))
             await self.session.commit()
-        except Exception:
+        except Exception as e:
             await self.session.rollback()
-            raise TokenNotCreatedException()
+            raise TokenNotCreatedException() from e
 
         return token_data
 
