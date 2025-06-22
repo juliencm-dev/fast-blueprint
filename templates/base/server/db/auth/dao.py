@@ -127,9 +127,9 @@ class AuthDAO:
             await self.session.commit()
             await self.session.refresh(new_device)
             return new_device.id
-        except Exception:
+        except Exception as e:
             await self.session.rollback()
-            raise DeviceNotCreatedException()
+            raise DeviceNotCreatedException() from e
 
     async def update_device(
         self, device_id: str, update_device_data: UpdateDeviceData
