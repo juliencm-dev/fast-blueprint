@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #0a0a0a;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #404040;
+            color: #f5f5f5;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .button:hover {
+            background-color: #262626;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ first_name }}!</h2>
+
+    <p>Thank you for signing up. To complete your registration, please verify your email address by clicking the button below:</p>
+
+    <a href="{{ validation_link }}" class="button">Verify Email Address</a>
+
+    <p>If the button above doesn't work, you can also copy and paste this link into your browser:</p>
+    <p style="word-break: break-all;">{{ validation_link }}</p>
+
+    <div class="footer">
+        <p>If you didn't create an account, you can safely ignore this email.</p>
+        <p>This is an automated message, please do not reply to this email.</p>
+    </div>
+</body>
+</html>

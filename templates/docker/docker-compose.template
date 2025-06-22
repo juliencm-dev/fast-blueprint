@@ -1,0 +1,88 @@
+networks:
+  {PROJECT_NAME}-network:
+    name: {PROJECT_NAME}-network
+    driver: bridge
+
+services:
+
+  backend-{PROJECT_NAME}:
+    container_name: {PROJECT_NAME}-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-{PROJECT_NAME}
+      - redis-{PROJECT_NAME}
+    volumes:
+      - ./server:/code/server
+    networks:
+      - {PROJECT_NAME}-network
+
+  postgres-{PROJECT_NAME}:
+    container_name: {PROJECT_NAME}-postgres
+    image: postgres
+    hostname: localhost
+    ports:
+      - "8080:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      -  ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - {PROJECT_NAME}-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+
+  pgadmin-{PROJECT_NAME}:
+    container_name: {PROJECT_NAME}-pgadmin
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres-{PROJECT_NAME}
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - {PROJECT_NAME}-network
+
+  redis-{PROJECT_NAME}:
+    container_name: {PROJECT_NAME}-redis
+    image: redis:latest
+    ports:
+      - "8081:6379"
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - ${REDIS_VOLUME}:/data
+    restart: unless-stopped
+    networks:
+      - {PROJECT_NAME}-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redisadmin-{PROJECT_NAME}:
+    container_name: {PROJECT_NAME}-redisadmin
+    image: erikdubbelboer/phpredisadmin
+    ports:
+      - "5051:80"
+    environment:
+      REDIS_1_HOST: redis-{PROJECT_NAME}
+      REDIS_1_PORT: 6379
+      REDIS_1_AUTH: ${REDIS_PASSWORD}
+    depends_on:
+      - redis-{PROJECT_NAME}
+    restart: unless-stopped
+    networks:
+      - {PROJECT_NAME}-network
