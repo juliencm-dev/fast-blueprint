@@ -1,20 +1,18 @@
+import orjson as json
 from fastapi import Depends
 from fastapi.security import HTTPBearer
-from sqlmodel.ext.asyncio.session import AsyncSession
 from jose import JWTError
 from redis import asyncio as aioredis
-import orjson as json
-
-from server.exceptions.auth import (
-    EmailNotVerifiedException,
-    InvalidCredentialsException,
-)
-from server.db import get_cache, get_session
-from server.db.user.schema import User
-from server.db.user.dao import UserDAO
-from server.utils.security.tokens import TokenManager
-from server.services.auth import get_token_manager
 from server.config import settings as s
+from server.db import get_cache
+from server.db import get_session
+from server.db.user.dao import UserDAO
+from server.db.user.schema import User
+from server.exceptions.auth import EmailNotVerifiedException
+from server.exceptions.auth import InvalidCredentialsException
+from server.services.auth import get_token_manager
+from server.utils.security.tokens import TokenManager
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 auth_scheme = HTTPBearer()
 

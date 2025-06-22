@@ -1,20 +1,22 @@
-from fastapi import APIRouter, Depends, Response, status, Request, BackgroundTasks
-
+from fastapi import APIRouter
+from fastapi import BackgroundTasks
+from fastapi import Depends
+from fastapi import Request
+from fastapi import Response
+from fastapi import status
+from server.db.user.schema import User
+from server.exceptions.auth import TokenNotFoundException
+from server.models import EmailRequest
+from server.models import LoginRequest
+from server.models import LoginResponse
+from server.models import PasswordResetRequest
+from server.models import RefreshResponse
+from server.models import UserCreateRequest
+from server.models import UserCreateResponse
+from server.models import UserResponse
 from server.services.auth import get_auth_service
 from server.services.auth.dependencies import get_current_active_user
 from server.services.auth.service import AuthService
-from server.exceptions.auth import TokenNotFoundException
-from server.db.user.schema import User
-from server.models import (
-    LoginResponse,
-    UserCreateResponse,
-    EmailRequest,
-    LoginRequest,
-    UserCreateRequest,
-    UserResponse,
-    PasswordResetRequest,
-    RefreshResponse,
-)
 from server.services.user import get_user_service
 from server.services.user.service import UserService
 

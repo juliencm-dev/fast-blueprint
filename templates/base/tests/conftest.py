@@ -1,5 +1,6 @@
 from datetime import timedelta
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
@@ -8,21 +9,23 @@ from server import create_app
 from server.config import settings as s
 from server.db import get_session
 from server.db.user.dao import UserDAO
-from server.db.user.schema import User, UserRole
+from server.db.user.schema import User
+from server.db.user.schema import UserRole
 from server.exceptions import register_exceptions
-from server.models import (
-    AccessTokenResponse,
-    LoginRequest,
-    RefreshTokenData,
-    RefreshTokenResponse,
-    UserCreateRequest,
-    UserResponse,
-    UserUpdateRequest,
-)
-from server.services.auth import AuthService, get_auth_service
+from server.models import AccessTokenResponse
+from server.models import LoginRequest
+from server.models import RefreshTokenData
+from server.models import RefreshTokenResponse
+from server.models import UserCreateRequest
+from server.models import UserResponse
+from server.models import UserUpdateRequest
+from server.services.auth import AuthService
+from server.services.auth import get_auth_service
 from server.services.auth.dependencies import get_current_active_user
-from server.services.email import EmailService, get_email_service
-from server.services.user import UserService, get_user_service
+from server.services.email import EmailService
+from server.services.email import get_email_service
+from server.services.user import UserService
+from server.services.user import get_user_service
 from server.utils import nowutc
 from server.utils.security.devices import DeviceManager
 from server.utils.security.password import PasswordManager

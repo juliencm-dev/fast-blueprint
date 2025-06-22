@@ -1,20 +1,31 @@
 from typing import Sequence
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlmodel import select
 
-from server.db.auth.schema import  ValidationToken, Device, ValidationTokenType
-from server.models import UpdateDeviceData, ValidationTokenData, RefreshTokenData, DeviceData
-from server.exceptions.auth import TokenNotCreatedException, TokenNotFoundException, DeviceNotCreatedException, DeviceNotFoundException
+from server.db.auth.schema import Device
 from server.db.auth.schema import RefreshToken
+from server.db.auth.schema import ValidationToken
+from server.db.auth.schema import ValidationTokenType
+from server.exceptions.auth import DeviceNotCreatedException
+from server.exceptions.auth import DeviceNotFoundException
+from server.exceptions.auth import TokenNotCreatedException
+from server.exceptions.auth import TokenNotFoundException
+from server.models import DeviceData
+from server.models import RefreshTokenData
+from server.models import UpdateDeviceData
+from server.models import ValidationTokenData
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+
 
 class AuthDAO:
-    def __init__(self, session:AsyncSession):
+    def __init__(self, session: AsyncSession):
         self.session = session
-    
-    #NOTE: Refresh tokens DAO methods:
+
+    # NOTE: Refresh tokens DAO methods:
 
     async def get_refresh_token_by_jti(self, jti: str) -> RefreshToken:
-        result= await self.session.exec(select(RefreshToken).where(RefreshToken.jti == jti))
+        result = await self.session.exec(
+            select(RefreshToken).where(RefreshToken.jti == jti)
+        )
         token_data = result.first()
 
         if not token_data:
@@ -39,14 +50,22 @@ class AuthDAO:
         await self.session.delete(token)
         await self.session.commit()
 
-
-    #NOTE: Validation tokens DAO methods:
-    async def get_validation_token(self, token: str): 
-        token_data = await self.session.exec(select(ValidationToken).where(ValidationToken.token == token))
+    # NOTE: Validation tokens DAO methods:
+    async def get_validation_token(self, token: str):
+        token_data = await self.session.exec(
+            select(ValidationToken).where(ValidationToken.token == token)
+        )
         return token_data.first()
 
-    async def get_validation_token_by_user_id_and_type(self, user_id: str, token_type: ValidationTokenType):
-        token_data = await self.session.exec(select(ValidationToken).where(ValidationToken.user_id == user_id, ValidationToken.token_type == token_type))
+    async def get_validation_token_by_user_id_and_type(
+        self, user_id: str, token_type: ValidationTokenType
+    ):
+        token_data = await self.session.exec(
+            select(ValidationToken).where(
+                ValidationToken.user_id == user_id,
+                ValidationToken.token_type == token_type,
+            )
+        )
         return token_data.first()
 
     async def insert_validation_token(self, token_data: ValidationTokenData):
@@ -60,7 +79,9 @@ class AuthDAO:
         return token_data
 
     async def delete_validation_token(self, token_str: str):
-        result = await self.session.exec(select(ValidationToken).where(ValidationToken.token == token_str))
+        result = await self.session.exec(
+            select(ValidationToken).where(ValidationToken.token == token_str)
+        )
         token = result.first()
 
         if not token:
@@ -69,11 +90,18 @@ class AuthDAO:
         await self.session.delete(token)
         await self.session.commit()
 
-    
-    #NOTE: Devices DAO methods:
+    # NOTE: Devices DAO methods:
 
-    async def get_device_id(self, raw_user_agent: str, ip_address: str, user_id: str) -> str | None:
-        result = await self.session.exec(select(Device).where(Device.raw_user_agent == raw_user_agent, Device.ip_address == ip_address, Device.user_id == user_id))
+    async def get_device_id(
+        self, raw_user_agent: str, ip_address: str, user_id: str
+    ) -> str | None:
+        result = await self.session.exec(
+            select(Device).where(
+                Device.raw_user_agent == raw_user_agent,
+                Device.ip_address == ip_address,
+                Device.user_id == user_id,
+            )
+        )
         device = result.first()
 
         if not device:
@@ -86,9 +114,10 @@ class AuthDAO:
         device = device.first()
         return device
 
-
     async def get_devices_by_user_id(self, user_id: str) -> Sequence[Device]:
-        devices = await self.session.exec(select(Device).where(Device.user_id == user_id))
+        devices = await self.session.exec(
+            select(Device).where(Device.user_id == user_id)
+        )
         return devices.all()
 
     async def insert_device(self, device_data: DeviceData) -> str:
@@ -102,7 +131,9 @@ class AuthDAO:
             await self.session.rollback()
             raise DeviceNotCreatedException()
 
-    async def update_device(self, device_id: str, update_device_data: UpdateDeviceData) -> None:
+    async def update_device(
+        self, device_id: str, update_device_data: UpdateDeviceData
+    ) -> None:
         device = await self.get_device_by_id(device_id)
 
         if not device:
@@ -114,7 +145,7 @@ class AuthDAO:
 
         self.session.add(device)
         await self.session.commit()
-    
+
     async def delete_user_devices(self, user_id: str) -> None:
         devices = await self.get_devices_by_user_id(user_id)
 
@@ -126,11 +157,9 @@ class AuthDAO:
 
     async def delete_device(self, device_id: str) -> None:
         device = await self.get_device_by_id(device_id)
-        
+
         if not device:
             raise DeviceNotFoundException()
 
         await self.session.delete(device)
         await self.session.commit()
-
-

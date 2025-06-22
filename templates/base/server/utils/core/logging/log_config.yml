@@ -19,7 +19,7 @@ handlers:
   stderr:
     class: logging.StreamHandler
     level: WARNING
-    formatter: detailed 
+    formatter: detailed
     stream: ext://sys.stdout
   file:
     class: logging.handlers.RotatingFileHandler
@@ -37,6 +37,5 @@ handlers:
 loggers:
   root:
     level: DEBUG
-    handlers: 
+    handlers:
     - queue_handler
-

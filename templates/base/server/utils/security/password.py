@@ -1,5 +1,6 @@
 from argon2 import PasswordHasher
 
+
 class PasswordManager:
     def __init__(self):
         self._ph = PasswordHasher()
@@ -9,4 +10,3 @@ class PasswordManager:
 
     def verify_password(self, hashed_password: str, password: str) -> bool:
         return self._ph.verify(hashed_password, password)
-

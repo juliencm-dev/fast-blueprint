@@ -1,12 +1,18 @@
-from typing import List, Dict, Any
-from pydantic import BaseModel, EmailStr
 from pathlib import Path
-from fastapi_mail import FastMail, ConnectionConfig, MessageSchema, MessageType
+from typing import Any
+from typing import Dict
+from typing import List
 
-from server.utils.security.tokens import TokenManager
-from server.db.user.schema import User
-from server.db.auth.schema import ValidationTokenType
+from fastapi_mail import ConnectionConfig
+from fastapi_mail import FastMail
+from fastapi_mail import MessageSchema
+from fastapi_mail import MessageType
+from pydantic import BaseModel
+from pydantic import EmailStr
 from server.config import settings as s
+from server.db.auth.schema import ValidationTokenType
+from server.db.user.schema import User
+from server.utils.security.tokens import TokenManager
 
 
 class EmailSchema(BaseModel):

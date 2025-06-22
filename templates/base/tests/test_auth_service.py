@@ -1,23 +1,18 @@
 from datetime import timedelta
-import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
+from unittest.mock import MagicMock
 
+import pytest
 from server.db.auth.schema import ValidationTokenType
-from server.exceptions.auth import (
-    InvalidCredentialsException,
-    EmailNotVerifiedException,
-    InvalidRefreshTokenException,
-    TokenNotFoundException,
-)
-from server.exceptions.user import (
-    UserNotCreatedException,
-    UserWithEmailAlreadyExistsException,
-)
-from server.models import (
-    AccessTokenResponse,
-    PasswordResetRequest,
-    RefreshTokenResponse,
-)
+from server.exceptions.auth import EmailNotVerifiedException
+from server.exceptions.auth import InvalidCredentialsException
+from server.exceptions.auth import InvalidRefreshTokenException
+from server.exceptions.auth import TokenNotFoundException
+from server.exceptions.user import UserNotCreatedException
+from server.exceptions.user import UserWithEmailAlreadyExistsException
+from server.models import AccessTokenResponse
+from server.models import PasswordResetRequest
+from server.models import RefreshTokenResponse
 from server.utils import nowutc
 
 # NOTE: This test module is for testing the AuthService class methods.

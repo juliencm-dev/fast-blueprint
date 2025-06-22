@@ -18,7 +18,7 @@ Secure your app from the start with best-practice auth setups.
 Includes JWT tokens, refresh mechanisms, rate limiting, and more.
 
 ### 🗄️ Database Integration
-Out-of-the-box support for SQLModel, SQLAlchemy, and Alembic.  
+Out-of-the-box support for SQLModel, SQLAlchemy, and Alembic.
 Choose from PostgreSQL, SQLite, MongoDB, or MySQL.
 
 ### 🛡️ Typesafe Environment Variables

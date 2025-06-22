@@ -1,23 +1,30 @@
 from fastapi import status
 from server.exceptions.base import ServerException
 
+
 class UserNotFoundException(ServerException):
     pass
+
 
 class UserWithEmailAlreadyExistsException(ServerException):
     pass
 
+
 class UserNotVerifiedException(ServerException):
     pass
+
 
 class UserRoleNotAllowedException(ServerException):
     pass
 
+
 class UserNotCreatedException(ServerException):
     pass
 
+
 class UserNotLoggedInException(ServerException):
     pass
+
 
 USER_EXCEPTIONS = {
     UserNotFoundException: {
@@ -62,9 +69,4 @@ USER_EXCEPTIONS = {
             "error_code": "user_not_logged_in",
         },
     },
-
 }
-
-
-
-

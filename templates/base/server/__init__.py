@@ -1,11 +1,16 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
 
+from fastapi import Depends
+from fastapi import FastAPI
 from server.config import settings as s
-from server.db import create_db, init_cache, close_cache
-from server.routes import auth, user, health
-from server.middlewares import register_middlewares
+from server.db import close_cache
+from server.db import create_db
+from server.db import init_cache
 from server.exceptions import register_exceptions
+from server.middlewares import register_middlewares
+from server.routes import auth
+from server.routes import health
+from server.routes import user
 from server.services.auth.dependencies import get_current_active_user
 from server.utils.core.logging.logger import setup_logger
 

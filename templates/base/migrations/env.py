@@ -1,15 +1,11 @@
 import asyncio
 from logging.config import fileConfig
 
+from alembic import context
+from server.config import settings as s
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-
-from alembic import context
-
-from server.config import settings as s
-from server.db.user.schema import User
-from server.db.auth.schema import RefreshToken, ValidationToken, Device
 from sqlmodel import SQLModel
 
 # this is the Alembic Config object, which provides
@@ -18,7 +14,7 @@ config = context.config
 
 DB_URL = s.DEV_DATABASE_URL if s.FASTAPI_ENV == "development" else s.PROD_DATABASE_URL
 
-config.set_main_option("sqlalchemy.url", DB_URL )
+config.set_main_option("sqlalchemy.url", DB_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

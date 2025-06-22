@@ -12,4 +12,3 @@ COPY server /code/server
 # Set environment variables for the backend
 ENV PYTHONPATH=/code
 CMD ["python", "-m", "server"]
-

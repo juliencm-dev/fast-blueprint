@@ -1,7 +1,8 @@
+from functools import lru_cache
 from typing import List
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from functools import lru_cache
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(BaseSettings):

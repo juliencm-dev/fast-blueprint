@@ -1,39 +1,46 @@
+from datetime import datetime
+from enum import Enum
 from typing import Dict
+
+import psutil
 from fastapi import APIRouter
 from pydantic import BaseModel
-from enum import Enum
-from datetime import datetime
-import psutil
-
-from server.db import check_cache, check_database 
-from server.utils.core.logging.logger import logger
-from server.utils import nowutc
 from server.config import settings as s
+from server.db import check_cache
+from server.db import check_database
+from server.utils import nowutc
+from server.utils.core.logging.logger import logger
+
 
 class ServiceStatus(str, Enum):
     HEALTHY = "healthy"
     DEGRADED = "degraded"
     UNHEALTHY = "unhealthy"
 
+
 class DatabaseStatus(str, Enum):
     ONLINE = "online"
     OFFLINE = "offline"
 
+
 class CacheStatus(str, Enum):
     ONLINE = "online"
     OFFLINE = "offline"
+
 
 class HealthCheckResponse(BaseModel):
     name: str
     version: str
     environment: str
     status: ServiceStatus
-    timestamp: datetime 
+    timestamp: datetime
     system: Dict[str, float]
     database: DatabaseStatus
     cache: CacheStatus
 
+
 router = APIRouter()
+
 
 @router.get("/", response_model=HealthCheckResponse)
 async def health_check() -> Dict:
@@ -43,7 +50,7 @@ async def health_check() -> Dict:
     db_status = DatabaseStatus.ONLINE
     cache_status = CacheStatus.ONLINE
 
-    #NOTE: This is where you can add your own health check logic.👇
+    # NOTE: This is where you can add your own health check logic.👇
     try:
         await check_database()
     except Exception as e:
@@ -57,7 +64,6 @@ async def health_check() -> Dict:
         logger.error(e)
         cache_status = CacheStatus.OFFLINE
         status = ServiceStatus.DEGRADED
-
 
     return {
         "name": s.APP_NAME,

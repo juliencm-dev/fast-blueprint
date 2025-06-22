@@ -1,15 +1,16 @@
-from typing import override
 import atexit
+import datetime as dt
+import json
 import logging.config
 import logging.handlers
-import yaml
-import json
 from pathlib import Path
-import datetime as dt
+from typing import override
+
+import yaml
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_LOG_ATTRS={ 
+DEFAULT_LOG_ATTRS = {
     "name",
     "msg",
     "args",
@@ -54,13 +55,14 @@ DEFAULT_LOG_ATTRS={
     "taskName",
 }
 
+
 def setup_logger():
     config = Path(__file__).parent / "log_config.yml"
     with open(config) as f:
         config = yaml.safe_load(f)
     logging.config.dictConfig(config)
     queue_handler = logging.getHandlerByName("queue_handler")
-    if queue_handler != None:
+    if queue_handler is not None:
         queue_handler.listener.start()
         atexit.register(queue_handler.listener.stop)
 
@@ -69,7 +71,7 @@ class JSONFormatter(logging.Formatter):
     def __init__(self, *, fmt_keys: dict[str, str] | None = None):
         super().__init__()
         self.fmt_keys = fmt_keys if fmt_keys else {}
-    
+
     @override
     def format(self, record: logging.LogRecord) -> str:
         message = self._format_message_to_dict(record)
@@ -94,20 +96,11 @@ class JSONFormatter(logging.Formatter):
             if (value := always_keys.get(val, None)) is not None
             else getattr(record, val)
             for key, val in self.fmt_keys.items()
-        } 
+        }
 
         message.update(always_keys)
 
         for key, value in record.__dict__.items():
             if key not in DEFAULT_LOG_ATTRS:
                 message[key] = value
-        return message 
-
-
-
-
-
-
-
-
-
+        return message

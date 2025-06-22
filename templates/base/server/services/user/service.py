@@ -1,13 +1,13 @@
 from typing import Sequence
 
 from server.db.user.dao import UserDAO
-from server.db.user.schema import User, UserRole
-from server.models import UserCreateRequest, UserUpdateRequest
-from server.exceptions.user import (
-    UserNotFoundException,
-    UserRoleNotAllowedException,
-    UserWithEmailAlreadyExistsException,
-)
+from server.db.user.schema import User
+from server.db.user.schema import UserRole
+from server.exceptions.user import UserNotFoundException
+from server.exceptions.user import UserRoleNotAllowedException
+from server.exceptions.user import UserWithEmailAlreadyExistsException
+from server.models import UserCreateRequest
+from server.models import UserUpdateRequest
 from server.utils.security import get_password_manager
 from server.utils.security.password import PasswordManager
 

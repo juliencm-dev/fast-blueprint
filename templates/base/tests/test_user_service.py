@@ -1,11 +1,9 @@
 from unittest.mock import MagicMock
 
 import pytest
-from server.exceptions.user import (
-    UserNotFoundException,
-    UserRoleNotAllowedException,
-    UserWithEmailAlreadyExistsException,
-)
+from server.exceptions.user import UserNotFoundException
+from server.exceptions.user import UserRoleNotAllowedException
+from server.exceptions.user import UserWithEmailAlreadyExistsException
 from server.services.user.service import UserService
 
 

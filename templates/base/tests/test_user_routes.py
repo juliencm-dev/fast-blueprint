@@ -1,13 +1,15 @@
-from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
 from unittest.mock import AsyncMock
-import pytest
-from server.db.user.schema import UserRole, User
-from server.models import UserResponse
-from server.exceptions.user import UserRoleNotAllowedException
 
+import pytest
+from server.config import settings as s
+from server.db.user.schema import User
+from server.db.user.schema import UserRole
+from server.exceptions.user import UserRoleNotAllowedException
+from server.models import UserResponse
 from server.services.auth.dependencies import get_current_active_user
 from server.services.user import get_user_service
-from server.config import settings as s
 
 
 @pytest.fixture

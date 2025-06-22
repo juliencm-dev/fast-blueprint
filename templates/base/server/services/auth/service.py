@@ -1,30 +1,28 @@
-from fastapi import Request, Response, BackgroundTasks
-
+from fastapi import BackgroundTasks
+from fastapi import Request
+from fastapi import Response
+from server.config import settings as s
 from server.db.user.dao import UserDAO
-from server.services.user import UserService
-from server.services.email import EmailService
 from server.db.user.schema import User
+from server.exceptions.auth import EmailNotVerifiedException
+from server.exceptions.auth import InvalidCredentialsException
+from server.exceptions.auth import InvalidVerificationTokenException
+from server.exceptions.auth import TokenNotFoundException
+from server.exceptions.user import UserNotCreatedException
+from server.exceptions.user import UserNotFoundException
+from server.models import AuthResponse
+from server.models import LoginRequest
+from server.models import PasswordResetRequest
+from server.models import UserCreateRequest
+from server.models import UserResponse
+from server.models import UserUpdateRequest
+from server.services.email import EmailService
+from server.services.user import UserService
+from server.utils import nowutc
 from server.utils.security.devices import DeviceManager
 from server.utils.security.password import PasswordManager
-from server.utils.security.tokens import TokenManager, ValidationTokenType
-from server.exceptions.auth import (
-    InvalidCredentialsException,
-    InvalidVerificationTokenException,
-    TokenNotFoundException,
-    EmailNotVerifiedException,
-)
-from server.exceptions.user import UserNotCreatedException, UserNotFoundException
-from server.models import (
-    LoginRequest,
-    AuthResponse,
-    UserCreateRequest,
-    UserResponse,
-    UserUpdateRequest,
-    PasswordResetRequest,
-    LoginRequest,
-)
-from server.utils import nowutc
-from server.config import settings as s
+from server.utils.security.tokens import TokenManager
+from server.utils.security.tokens import ValidationTokenType
 
 
 class AuthService:

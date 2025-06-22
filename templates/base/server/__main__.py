@@ -1,6 +1,6 @@
-from uvicorn import run
 from server import create_app
 from server.config import settings as s
+from uvicorn import run
 
 development = s.FASTAPI_ENV == "development"
 

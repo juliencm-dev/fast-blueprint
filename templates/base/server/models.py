@@ -1,20 +1,24 @@
-from typing import List, Dict, Any, Optional
 from datetime import datetime
-from fastapi_mail import MessageType
-from pydantic import BaseModel, EmailStr
+from typing import List
+from typing import Optional
+
+from pydantic import BaseModel
+from pydantic import EmailStr
 from server.db.user.schema import UserRole
 
+# NOTE: User pydantic models for type safety:
 
-#NOTE: User pydantic models for type safety:
 
 class UserBase(BaseModel):
     first_name: str
     last_name: str
-    email: EmailStr 
+    email: EmailStr
+
 
 class UserCreateRequest(UserBase):
     password: str
     role: Optional[UserRole] = None
+
 
 class UserUpdateRequest(BaseModel):
     first_name: Optional[str] = None
@@ -24,29 +28,38 @@ class UserUpdateRequest(BaseModel):
     role: Optional[UserRole] = None
     verified: Optional[datetime] = None
 
+
 class PasswordResetRequest(BaseModel):
-    password: str 
+    password: str
     confirm_password: str
+
 
 class EmailRequest(BaseModel):
     email: EmailStr
+
 
 class UserResponse(UserBase):
     role: str
     verified: Optional[datetime] = None
 
+
 class UserCreateResponse(BaseModel):
-    message: str = "Account successfully created! Please check your email to verify your account."
+    message: str = (
+        "Account successfully created! Please check your email to verify your account."
+    )
     user: UserResponse
 
 
-#NOTE: Token related pydantic models:
+# NOTE: Token related pydantic models:
+
 
 class TokenBase(BaseModel):
     expires_at: datetime
 
+
 class AccessTokenData(TokenBase):
     id: str
+
 
 class RefreshTokenData(TokenBase):
     jti: str
@@ -54,41 +67,48 @@ class RefreshTokenData(TokenBase):
     device_id: str
     valid: bool = True
 
+
 class ValidationTokenData(BaseModel):
     user_id: str
     token: str
     expires_at: datetime
     token_type: str
 
+
 class RefreshTokenResponse(TokenBase):
     token: str
+
 
 class AccessTokenResponse(BaseModel):
     token: str
     token_type: str
 
 
-#NOTE: Auth related pydantic models:
+# NOTE: Auth related pydantic models:
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
 
 class AuthResponseBase(BaseModel):
     access_token: AccessTokenResponse
     user: UserResponse
 
+
 class LoginResponse(AuthResponseBase):
     message: str = "User successfully logged in"
 
+
 class RefreshResponse(AuthResponseBase):
     message: str = "User access token has been refreshed."
+
 
 class AuthResponse(AuthResponseBase):
     refresh_token: RefreshTokenResponse
 
 
+# NOTE: Device pydantic models:
 
-#NOTE: Device pydantic models:
 
 class DeviceData(BaseModel):
     user_id: str
@@ -103,8 +123,10 @@ class DeviceData(BaseModel):
     ip_address: str
     last_seen: datetime
 
+
 class UserDevicesData(BaseModel):
     devices: List[DeviceData]
+
 
 class UpdateDeviceData(BaseModel):
     user_id: Optional[str] = None
@@ -118,4 +140,3 @@ class UpdateDeviceData(BaseModel):
     os: Optional[str] = None
     device_type: Optional[str] = None
     last_seen: Optional[datetime] = None
-
