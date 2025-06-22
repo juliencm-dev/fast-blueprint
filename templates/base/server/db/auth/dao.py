@@ -37,9 +37,9 @@ class AuthDAO:
         try:
             self.session.add(RefreshToken(**token_data.model_dump()))
             await self.session.commit()
-        except Exception:
+        except Exception as e:
             await self.session.rollback()
-            raise TokenNotCreatedException()
+            raise TokenNotCreatedException() from e
 
     async def delete_refresh_token(self, jti: str):
         token = await self.get_refresh_token_by_jti(jti)
