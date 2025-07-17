@@ -7,6 +7,7 @@
 *.dll
 *.so
 *.dylib
+fast-blueprint
 
 # Test binary, built with `go test -c`
 *.test
